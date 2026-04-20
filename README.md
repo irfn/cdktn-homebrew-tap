@@ -25,12 +25,15 @@ brew install cdktn
 
 Community fork of the deprecated `cdktf` (CDK for Terraform) formula.
 
-- **Current version:** 0.22.1 (tracks upstream git tags)
+- **Current version:** 0.22.1 (tracks the [`cdktn-cli`](https://www.npmjs.com/package/cdktn-cli) npm release)
 - **Source:** [`open-constructs/cdk-terrain`](https://github.com/open-constructs/cdk-terrain)
 - **License:** MPL-2.0
-- **Build:** from GitHub source tarball (full monorepo install, ~1.5 GB, ~2 min)
 - **Dependencies:** `node@20`, `terraform`, `yarn` (build-time)
 - **Formula:** [`Formula/cdktn.rb`](./Formula/cdktn.rb)
+
+**Stable** (`brew install cdktn`): installs the prebuilt [`cdktn-cli`](https://www.npmjs.com/package/cdktn-cli) npm tarball — ~400 MB, ~30 sec.
+
+**Bleeding-edge** (`brew install --HEAD cdktn`): builds from the `cdk-terrain` main branch via `yarn build` (full monorepo, tsc + jsii) — ~1.5 GB, ~2 min.
 
 ### Migrating from `cdktf`
 
@@ -55,7 +58,7 @@ npm uninstall -g cdktn-cli
 
 Then re-run `brew link cdktn`.
 
-**Install size is huge.** Yes — the formula currently builds from source and ships the full monorepo `node_modules` (~1.5 GB) because the CLI's esbuild output is a partial bundle that requires its dependencies at runtime. This will shrink substantially when `cdktn-cli` publishes to npm and the formula switches to consuming the prebuilt package.
+**Install size feels large for a CLI.** The stable (npm) path is ~400 MB and the `--HEAD` path is ~1.5 GB. Both ship the CLI's runtime `node_modules` because the CLI is a partial esbuild bundle that loads several dependencies (`cdktn`, `@cdktn/hcl2cdk`, `constructs`, `yargs`, ...) at runtime rather than inlining them.
 
 ## Contributing
 
